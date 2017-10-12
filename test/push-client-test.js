@@ -1,4 +1,5 @@
 /* global describe,it,beforeEach,afterEach,expect,stub */
+/* eslint-disable no-unused-expressions */
 
 describe('PushClient', function () {
   var PushClient, request, client
@@ -56,10 +57,35 @@ describe('PushClient', function () {
     })
   })
 
+  describe('_run()', function () {
+    it('does not call _poll if stopped', function () {
+      client = new PushClient({ak: '111-222', name: 'panda'})
+      stub(client, '_poll')
+      client._run()
+      client._poll.should.not.have.been.called
+    })
+  })
+
+  describe('_emit()', function () {
+    it('does not emit while stopped', function (done) {
+      client = new PushClient({ak: '111-222', name: 'panda'})
+      client.on('update', function () {
+        throw new Error('should not emit while stopped')
+      })
+      setTimeout(done, 50)
+      client._emit('update', {})
+    })
+  })
+
   describe('_poll()', function () {
+    beforeEach(function () {
+      client = new PushClient({ak: '111-222', name: 'panda'})
+      client.stopped = false
+      stub(client, '_run')
+    })
+
     it('calls the longpoll update endpoint', function () {
       request.get.callsArgWith(1, undefined, { statusCode: 200 }, '{}')
-      client = new PushClient({ak: '111-222', name: 'panda'})
       client._poll()
       request.get.should.have.been.calledWith({
         url: 'https://app.tt.se/punkt/v1/update',
@@ -69,7 +95,6 @@ describe('PushClient', function () {
 
     it('emits events on updates', function (done) {
       request.get.callsArgWith(1, undefined, { statusCode: 200 }, JSON.stringify({uri: 'http://tt.se/panda'}))
-      client = new PushClient({ak: '111-222', name: 'panda'})
       client.on('update', function (data) {
         expect(data).to.eql({uri: 'http://tt.se/panda'})
         done()
@@ -79,17 +104,15 @@ describe('PushClient', function () {
 
     it('respects 504 errors', function (done) {
       request.get.callsArgWith(1, undefined, { statusCode: 504 }, undefined)
-      client = new PushClient({ak: '111-222', name: 'panda'})
       client.on('error', function (data) {
         throw new Error('should not report 504 as error')
       })
-      setTimeout(done, 100)
+      setTimeout(done, 50)
       client._poll()
     })
 
     it('emits other server errors', function (done) {
       request.get.callsArgWith(1, undefined, { statusCode: 500 }, undefined)
-      client = new PushClient({ak: '111-222', name: 'panda'})
       client.on('error', function (err) {
         expect(err.statusCode).to.equal(500)
         done()
@@ -99,7 +122,6 @@ describe('PushClient', function () {
 
     it('emits application errors', function (done) {
       request.get.callsArgWith(1, new Error('panda attack'))
-      client = new PushClient({ak: '111-222', name: 'panda'})
       client.on('error', function (err) {
         expect(err.message).to.equal('panda attack')
         done()

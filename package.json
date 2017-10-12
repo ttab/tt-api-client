@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha && standard"
   },
   "author": "Fredrik Appelberg",
   "license": "MIT",
@@ -17,7 +17,8 @@
     "chai-as-promised": "^7.1.1",
     "mocha": "^4.0.1",
     "sinon": "^4.0.1",
-    "sinon-chai": "^2.14.0"
+    "sinon-chai": "^2.14.0",
+    "standard": "^10.0.3"
   },
   "dependencies": {
     "request": "^2.83.0"

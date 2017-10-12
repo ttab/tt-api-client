@@ -33,11 +33,34 @@ describe('PushClient', function () {
     expect(client.opts).to.have.property('url', 'http://localhost:8080')
   })
 
-  describe('poll()', function () {
+  describe('start()', function () {
+    it('starts the loop', function () {
+      client = new PushClient({ak: '111-222', name: 'panda', url: 'http://localhost:8080'})
+      client._run = stub()
+      expect(client.stopped).to.equal(true)
+      client.start()
+      expect(client.stopped).to.equal(false)
+      client._run.should.have.been.calledWith()
+    })
+  })
+
+  describe('stop()', function () {
+    it('stops the loop', function () {
+      client = new PushClient({ak: '111-222', name: 'panda', url: 'http://localhost:8080'})
+      client._run = stub()
+      client.start()
+      expect(client.stopped).to.equal(false)
+      client._run.should.have.been.calledWith()
+      client.stop()
+      expect(client.stopped).to.equal(true)
+    })
+  })
+
+  describe('_poll()', function () {
     it('calls the longpoll update endpoint', function () {
       request.get.callsArgWith(1, undefined, { statusCode: 200 }, '{}')
       client = new PushClient({ak: '111-222', name: 'panda'})
-      client.poll()
+      client._poll()
       request.get.should.have.been.calledWith({
         url: 'https://app.tt.se/punkt/v1/update',
         qs: { ak: '111-222', name: 'panda' }
@@ -51,7 +74,7 @@ describe('PushClient', function () {
         expect(data).to.eql({uri: 'http://tt.se/panda'})
         done()
       })
-      client.poll()
+      client._poll()
     })
 
     it('respects 504 errors', function (done) {
@@ -61,7 +84,7 @@ describe('PushClient', function () {
         throw new Error('should not report 504 as error')
       })
       setTimeout(done, 100)
-      client.poll()
+      client._poll()
     })
 
     it('emits other server errors', function (done) {
@@ -71,7 +94,7 @@ describe('PushClient', function () {
         expect(err.statusCode).to.equal(500)
         done()
       })
-      client.poll()
+      client._poll()
     })
 
     it('emits application errors', function (done) {
@@ -81,7 +104,7 @@ describe('PushClient', function () {
         expect(err.message).to.equal('panda attack')
         done()
       })
-      client.poll()
+      client._poll()
     })
   })
 })

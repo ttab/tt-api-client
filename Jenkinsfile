@@ -1,5 +1,4 @@
 pipeline {
-  agent { docker 'node:boron' }
   stages {
     stage('checkout') {
       steps {
@@ -8,6 +7,7 @@ pipeline {
       }
     }
     stage('test') {
+      agent { docker 'node:boron' }
       steps {
         sh 'npm test'
       }

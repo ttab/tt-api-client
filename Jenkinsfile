@@ -1,4 +1,5 @@
 pipeline {
+  agent { docker 'node:boron' }
   stages {
     stage('checkout') {
       steps {
@@ -6,8 +7,12 @@ pipeline {
         sh 'git clean -d -f -x'
       }
     }
+    stage('install') {
+      steps {
+        sh 'npm install'
+      }
+    }
     stage('test') {
-      agent { docker 'node:boron' }
       steps {
         sh 'npm test'
       }

@@ -17,7 +17,11 @@ describe('PushClient', function () {
     }).to.throw('access key required')
   })
 
-  it('requires a feed name')
+  it('requires a feed name', function () {
+    expect(function () {
+      client = new PushClient({ak: '111-222'})
+    }).to.throw('feed name required')
+  })
 
   describe('poll()', function () {
     it('calls the longpoll update endpoint', function () {

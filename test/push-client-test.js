@@ -23,6 +23,16 @@ describe('PushClient', function () {
     }).to.throw('feed name required')
   })
 
+  it('assumes a default url if not specified', function () {
+    client = new PushClient({ak: '111-222', name: 'panda'})
+    expect(client.opts).to.have.property('url', 'https://app.tt.se')
+  })
+
+  it('allows custom urls', function () {
+    client = new PushClient({ak: '111-222', name: 'panda', url: 'http://localhost:8080'})
+    expect(client.opts).to.have.property('url', 'http://localhost:8080')
+  })
+
   describe('poll()', function () {
     it('calls the longpoll update endpoint', function () {
       request.get.callsArgWith(1, undefined, { statusCode: 200 }, '{}')

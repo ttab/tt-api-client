@@ -128,5 +128,14 @@ describe('PushClient', function () {
       })
       client._poll()
     })
+
+    it('handles JSON parse errors', function (done) {
+      request.get.callsArgWith(1, undefined, { statusCode: 200 }, '<html><title>hello world</title></html>')
+      client.on('error', function (err) {
+        expect(err).to.be.an.instanceof(SyntaxError)
+        done()
+      })
+      client._poll()
+    })
   })
 })

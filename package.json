@@ -21,6 +21,9 @@
     "standard": "^10.0.3"
   },
   "dependencies": {
+    "browserify": "^14.4.0",
+    "eventemitter3": "^2.0.3",
+    "mochify": "^3.3.0",
     "request": "^2.83.0"
   }
 }

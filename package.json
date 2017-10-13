@@ -8,7 +8,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha && standard"
+    "test": "mocha && mochify && standard"
+  },
+  "browser": {
+    "./index.js": "./browser.js"
   },
   "author": "Fredrik Appelberg",
   "license": "MIT",

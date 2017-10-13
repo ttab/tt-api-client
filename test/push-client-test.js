@@ -102,6 +102,15 @@ describe('PushClient', function () {
       client._poll()
     })
 
+    it('respects 408 errors', function (done) {
+      request.get.callsArgWith(1, undefined, { statusCode: 408 }, undefined)
+      client.on('error', function (data) {
+        throw new Error('should not report 408 as error')
+      })
+      setTimeout(done, 50)
+      client._poll()
+    })
+
     it('respects 504 errors', function (done) {
       request.get.callsArgWith(1, undefined, { statusCode: 504 }, undefined)
       client.on('error', function (data) {

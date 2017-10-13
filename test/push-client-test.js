@@ -120,6 +120,28 @@ describe('PushClient', function () {
       client._poll()
     })
 
+    it('respects ETIMEDOUT errors', function (done) {
+      var err = new Error()
+      err.code = 'ETIMEDOUT'
+      request.get.callsArgWith(1, err, undefined, undefined)
+      client.on('error', function (data) {
+        throw new Error('should not report ETIMEDOUT as error')
+      })
+      setTimeout(done, 50)
+      client._poll()
+    })
+
+    it('respects ESOCKETTIMEDOUT errors', function (done) {
+      var err = new Error()
+      err.code = 'ESOCKETTIMEDOUT'
+      request.get.callsArgWith(1, err, undefined, undefined)
+      client.on('error', function (data) {
+        throw new Error('should not report ESOCKETTIMEDOUT as error')
+      })
+      setTimeout(done, 50)
+      client._poll()
+    })
+
     it('emits other server errors', function (done) {
       request.get.callsArgWith(1, undefined, { statusCode: 500 }, undefined)
       client.on('error', function (err) {

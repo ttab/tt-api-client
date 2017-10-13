@@ -1,1 +1,1 @@
-module.exports = require('./api')(require('eventemitter3'), require('request'))
+module.exports = require('./api')(require('eventemitter3'), require('browser-request'))

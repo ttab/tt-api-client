@@ -10,14 +10,14 @@
     var TT = require('./index')
 
     var client = TT.pushClient({
-      ak: '<ACCESS KEY>',
-      name: '<FEED NAME>'
+      ak: '<ACCESS KEY>'
     })
+    
+    const feed = client.feed({name: '<FEED NAME>'})
 
-    client.on('error', console.error)
-    client.on('update', function (data) {
-      console.log(data.uri)
-    })
+    feed.updates()
+      .on('error', console.error)
+      .on('update', function (data) {
+        console.log(data.uri)
+      }).start()
 
-    console.log('waiting for news...')
-    client.start()

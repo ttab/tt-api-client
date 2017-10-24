@@ -1,12 +1,12 @@
 /* global describe,it,beforeEach,afterEach,expect,stub */
 /* eslint-disable no-unused-expressions */
 
-describe('PushClient', function () {
-  var PushClient, request, client
+describe('Updates', function () {
+  var Updates, request, client
   beforeEach(function () {
     request = require('request')
     stub(request, 'get')
-    PushClient = require('../lib/push-client')(require('events').EventEmitter, request)
+    Updates = require('../lib/updates')(require('events').EventEmitter, request)
   })
   afterEach(function () {
     request.get.restore()
@@ -14,29 +14,29 @@ describe('PushClient', function () {
 
   it('requires an access key', function () {
     expect(function () {
-      client = new PushClient({})
+      client = new Updates({})
     }).to.throw('access key required')
   })
 
   it('requires a feed name', function () {
     expect(function () {
-      client = new PushClient({ak: '111-222'})
+      client = new Updates({ak: '111-222'})
     }).to.throw('feed name required')
   })
 
   it('assumes a default url if not specified', function () {
-    client = new PushClient({ak: '111-222', name: 'panda'})
+    client = new Updates({ak: '111-222', name: 'panda'})
     expect(client.opts).to.have.property('url', 'https://app.tt.se')
   })
 
   it('allows custom urls', function () {
-    client = new PushClient({ak: '111-222', name: 'panda', url: 'http://localhost:8080'})
+    client = new Updates({ak: '111-222', name: 'panda', url: 'http://localhost:8080'})
     expect(client.opts).to.have.property('url', 'http://localhost:8080')
   })
 
   describe('start()', function () {
     it('starts the loop', function () {
-      client = new PushClient({ak: '111-222', name: 'panda', url: 'http://localhost:8080'})
+      client = new Updates({ak: '111-222', name: 'panda', url: 'http://localhost:8080'})
       client._run = stub()
       expect(client.stopped).to.equal(true)
       client.start()
@@ -47,7 +47,7 @@ describe('PushClient', function () {
 
   describe('stop()', function () {
     it('stops the loop', function () {
-      client = new PushClient({ak: '111-222', name: 'panda', url: 'http://localhost:8080'})
+      client = new Updates({ak: '111-222', name: 'panda', url: 'http://localhost:8080'})
       client._run = stub()
       client.start()
       expect(client.stopped).to.equal(false)
@@ -59,7 +59,7 @@ describe('PushClient', function () {
 
   describe('_run()', function () {
     it('does not call _poll if stopped', function () {
-      client = new PushClient({ak: '111-222', name: 'panda'})
+      client = new Updates({ak: '111-222', name: 'panda'})
       stub(client, '_poll')
       client._run()
       client._poll.should.not.have.been.called
@@ -68,7 +68,7 @@ describe('PushClient', function () {
 
   describe('_emit()', function () {
     it('does not emit while stopped', function (done) {
-      client = new PushClient({ak: '111-222', name: 'panda'})
+      client = new Updates({ak: '111-222', name: 'panda'})
       client.on('update', function () {
         throw new Error('should not emit while stopped')
       })
@@ -79,7 +79,7 @@ describe('PushClient', function () {
 
   describe('_poll()', function () {
     beforeEach(function () {
-      client = new PushClient({ak: '111-222', name: 'panda'})
+      client = new Updates({ak: '111-222', name: 'panda'})
       client.stopped = false
       stub(client, '_run')
     })

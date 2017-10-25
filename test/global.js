@@ -7,3 +7,7 @@ global.stub = sinon.stub
 
 chai.use(require('sinon-chai'))
 chai.should()
+
+if (!global.Promise) {
+  global.Promise = require('promise-polyfill')
+}

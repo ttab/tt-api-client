@@ -16,17 +16,18 @@
   "author": "Fredrik Appelberg",
   "license": "MIT",
   "devDependencies": {
+    "browserify": "^14.4.0",
     "chai": "^4.1.2",
     "mocha": "^4.0.1",
+    "mochify": "^3.3.0",
+    "promise-polyfill": "^6.0.2",
     "sinon": "^4.0.1",
     "sinon-chai": "^2.14.0",
     "standard": "^10.0.3"
   },
   "dependencies": {
     "browser-request": "^0.3.3",
-    "browserify": "^14.4.0",
     "eventemitter3": "^2.0.3",
-    "mochify": "^3.3.0",
     "request": "^2.83.0"
   }
 }

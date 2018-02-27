@@ -6,7 +6,7 @@ module.exports = function (EventEmitter, request) {
         request.get({
           url: opts.host + '/content/v1/' + mt + '/' + op,
           qs: q,
-          auth: {bearer: opts.token},
+          headers: {'Authorization': 'Bearer ' + opts.token},
           strictSSL: false
         }, function (err, response, body) {
           if (err) return reject(err)
@@ -32,7 +32,7 @@ module.exports = function (EventEmitter, request) {
                   events.emit('hit', hit)
                 })
               }).catch(function (err) {
-                console.error(err)
+                events.emit('error', err)
               }).then(function () {
                 return next()
               })

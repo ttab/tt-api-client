@@ -7,8 +7,7 @@ module.exports = function (EventEmitter, request) {
         request.get({
           url: opts.host + '/content/v1/' + mt + '/' + op,
           qs: q,
-          headers: {'Authorization': 'Bearer ' + token},
-          strictSSL: false
+          headers: {'Authorization': 'Bearer ' + token}
         }, function (err, response, body) {
           if (err) return reject(err)
           if (response.statusCode === 200) {

@@ -1,7 +1,7 @@
 module.exports = function (EventEmitter, request) {
   return function (opts) {
     if (!opts.host) throw new Error('host required')
-    var token
+    var token, running
     const rest = function (mt, op, q) {
       return new Promise(function (resolve, reject) {
         request.get({
@@ -13,7 +13,7 @@ module.exports = function (EventEmitter, request) {
           if (response.statusCode === 200) {
             return resolve(JSON.parse(body))
           }
-          reject(new Error('status ' + response.statusCode))
+          reject(Object.assign(new Error('status ' + response.statusCode), {statusCode: response.statusCode}))
         })
       })
     }
@@ -38,10 +38,16 @@ module.exports = function (EventEmitter, request) {
               }).catch(function (err) {
                 events.emit('error', err)
               }).then(function () {
-                return next()
+                if (running) return next()
               })
             }
-            next()
+            events.start = function () {
+              running = true
+              next()
+            }
+            events.stop = function () {
+              running = false
+            }
             return events
           }
         }

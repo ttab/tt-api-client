@@ -1,12 +1,13 @@
 module.exports = function (EventEmitter, request) {
   return function (opts) {
-    opts = Object.assign({host: 'http://localhost:3100'}, opts)
+    if (!opts.host) throw new Error('host required')
+    var token
     const rest = function (mt, op, q) {
       return new Promise(function (resolve, reject) {
         request.get({
           url: opts.host + '/content/v1/' + mt + '/' + op,
           qs: q,
-          headers: {'Authorization': 'Bearer ' + opts.token},
+          headers: {'Authorization': 'Bearer ' + token},
           strictSSL: false
         }, function (err, response, body) {
           if (err) return reject(err)
@@ -18,7 +19,11 @@ module.exports = function (EventEmitter, request) {
       })
     }
 
-    return {
+    const api = {
+      token: function (_token) {
+        token = _token
+        return api
+      },
       content: function (mediaType) {
         return {
           search: function (q) {
@@ -43,5 +48,6 @@ module.exports = function (EventEmitter, request) {
         }
       }
     }
+    return api
   }
 }

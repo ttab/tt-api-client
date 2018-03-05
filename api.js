@@ -2,7 +2,7 @@ module.exports = function (EventEmitter, request) {
   return function (opts) {
     if (!opts.host) throw new Error('host required')
     var token, running
-    const rest = function (mt, op, q) {
+    var rest = function (mt, op, q) {
       return new Promise(function (resolve, reject) {
         request.get({
           url: opts.host + '/content/v1/' + mt + '/' + op,
@@ -18,7 +18,7 @@ module.exports = function (EventEmitter, request) {
       })
     }
 
-    const api = {
+    var api = {
       token: function (_token) {
         token = _token
         return api

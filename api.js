@@ -29,11 +29,13 @@ module.exports = function (EventEmitter, request) {
             return rest(mediaType, 'search', q)
           },
           stream: function (q) {
+            var query = Object.assign({}, q)
             var events = new EventEmitter()
             var next = function () {
-              rest(mediaType, 'stream', q).then(function (hits) {
+              rest(mediaType, 'stream', query).then(function (hits) {
                 hits.hits.forEach(function (hit) {
                   events.emit('hit', hit)
+                  query.last = hit.uri
                 })
               }).catch(function (err) {
                 events.emit('error', err)

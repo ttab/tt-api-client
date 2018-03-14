@@ -34,7 +34,7 @@ module.exports = function (EventEmitter, request) {
             var next = function () {
               rest(mediaType, 'stream', query).then(function (hits) {
                 hits.hits.forEach(function (hit) {
-                  events.emit('hit', hit)
+                  events.emit('data', hit)
                   query.last = hit.uri
                 })
               }).catch(function (err) {

@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha && mochify && standard"
+    "test": "mocha && standard"
   },
   "browser": {
     "./index.js": "./browser.js"
@@ -26,7 +26,6 @@
     "browser-request": "^0.3.3",
     "browserify": "^14.4.0",
     "eventemitter3": "^2.0.3",
-    "mochify": "^3.3.0",
     "request": "^2.83.0"
   }
 }

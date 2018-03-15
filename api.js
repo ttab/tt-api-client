@@ -1,6 +1,6 @@
 module.exports = function (EventEmitter, request) {
   return function (opts) {
-    if (!opts.host) throw new Error('host required')
+    opts = Object.assign({host: 'https://api.tt.se'}, opts)
     var token, running
     var rest = function (mt, op, q) {
       return new Promise(function (resolve, reject) {

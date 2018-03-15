@@ -5,19 +5,25 @@
 ![Monthly downloads](http://img.shields.io/npm/dm/tt-api-client.svg) &nbsp;
 ![Build Status](https://ci2.tt.se/buildStatus/icon\?job\=ttab/tt-api-client/master)
 
-## Push API
+## Content API
 
-    var TT = require('./index')
-
-    var client = TT.pushClient({
-      ak: '<ACCESS KEY>',
-      name: '<FEED NAME>'
+    const Api = require('tt-api-client')
+    const api = Api().token(process.env.TOKEN)
+    
+    # searching
+    api.content('text').search({q: 'panda'}).then(function (res) {
+      console.log(res)
+    }).catch(function (err) {
+      console.error(err)
     })
-
-    client.on('error', console.error)
-    client.on('update', function (data) {
-      console.log(data.uri)
+    
+    # streaming updates
+    var images = api.content('image').stream({q: 'panda'})
+    images.on('data', function (data) {
+      console.log(data)
     })
+    images.on('error', function (err) {
+      console.error(err.message)
+    })
+    images.start()
 
-    console.log('waiting for news...')
-    client.start()

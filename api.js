@@ -10,10 +10,16 @@ module.exports = function (EventEmitter, request) {
           headers: {'Authorization': 'Bearer ' + token}
         }, function (err, response, body) {
           if (err) return reject(err)
+          var data = null
+          try {
+            data = JSON.parse(body)
+          } catch (err) { }
           if (response.statusCode === 200) {
-            return resolve(JSON.parse(body))
+            return resolve(data)
           }
-          reject(Object.assign(new Error('status ' + response.statusCode), {statusCode: response.statusCode}))
+          reject(Object.assign(
+            new Error('status ' + response.statusCode),
+            {statusCode: response.statusCode}, data))
         })
       })
     }

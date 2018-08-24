@@ -80,14 +80,21 @@ module.exports = function (EventEmitter, request) {
           }
         }
       },
-      notification: {
-        list: function (q) {
-          return rest('content')(null, 'notification', q)
-        },
-        delete: function (id, q) {
-          return rest('content')(null, `notification/${id}`, q, 'delete')
+      notification: (function () {
+        var call = rest('content')
+        var fn = function (id) {
+          return {
+            delete: function () {
+              return call('text', `notification/${id}`, null, 'delete')
+            }
+          }
         }
-      },
+        fn.list = function () {
+          // mediatype is irrelevant here
+          return call('image', 'notification')
+        }
+        return fn
+      }()),
       user: (function () {
         var call = rest('user')
         return {

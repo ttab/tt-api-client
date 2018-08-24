@@ -1,7 +1,7 @@
 module.exports = function (EventEmitter, request) {
   return function (opts) {
     opts = Object.assign({host: 'https://api.tt.se'}, opts)
-    var token, running
+    var token
     var rest = function (mt, op, q) {
       return new Promise(function (resolve, reject) {
         request.get({
@@ -35,6 +35,7 @@ module.exports = function (EventEmitter, request) {
             return rest(mediaType, 'search', q)
           },
           stream: function (q) {
+            var running
             var query = Object.assign({}, q)
             var events = new EventEmitter()
             var next = function () {

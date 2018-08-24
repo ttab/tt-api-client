@@ -1,27 +1,36 @@
+const debug = require('debug')('tt:api')
+
 module.exports = function (EventEmitter, request) {
   return function (opts) {
     opts = Object.assign({host: 'https://api.tt.se'}, opts)
     var token
-    var rest = function (mt, op, q) {
-      return new Promise(function (resolve, reject) {
-        request.get({
-          url: opts.host + '/content/v1/' + mt + '/' + op,
-          qs: q,
-          headers: {'Authorization': 'Bearer ' + token}
-        }, function (err, response, body) {
-          if (err) return reject(err)
-          var data = null
-          try {
-            data = JSON.parse(body)
-          } catch (err) { }
-          if (response.statusCode === 200) {
-            return resolve(data)
-          }
-          reject(Object.assign(
-            new Error('status ' + response.statusCode),
-            {statusCode: response.statusCode}, data))
+    var rest = function (ap, v = 'v1') {
+      return function (mt, op, q, method = 'get') {
+        var url = [ opts.host, ap, v, mt, op ].filter(function (i) {
+          return i
+        }).join('/')
+        debug(method, url)
+        return new Promise(function (resolve, reject) {
+          request({
+            method: method,
+            url: url,
+            qs: q,
+            headers: {'Authorization': 'Bearer ' + token}
+          }, function (err, response, body) {
+            if (err) return reject(err)
+            var data = null
+            try {
+              data = JSON.parse(body)
+            } catch (err) { }
+            if (response.statusCode === 200) {
+              return resolve(data)
+            }
+            reject(Object.assign(
+              new Error('status ' + response.statusCode),
+              {statusCode: response.statusCode}, data))
+          })
         })
-      })
+      }
     }
 
     var api = {
@@ -30,16 +39,17 @@ module.exports = function (EventEmitter, request) {
         return api
       },
       content: function (mediaType) {
+        var call = rest('content')
         return {
           search: function (q) {
-            return rest(mediaType, 'search', q)
+            return call(mediaType, 'search', q)
           },
           stream: function (q) {
             var running
             var query = Object.assign({}, q)
             var events = new EventEmitter()
             var next = function () {
-              rest(mediaType, 'stream', query).then(function (hits) {
+              call(mediaType, 'stream', query).then(function (hits) {
                 if (running) {
                   hits.hits.forEach(function (hit) {
                     events.emit('data', hit)
@@ -62,9 +72,30 @@ module.exports = function (EventEmitter, request) {
               running = false
             }
             return events
+          },
+          notification: {
+            create: function (q) {
+              return call(mediaType, 'notification', q, 'post')
+            }
           }
         }
-      }
+      },
+      notification: {
+        list: function (q) {
+          return rest('content')(null, 'notification', q)
+        },
+        delete: function (id, q) {
+          return rest('content')(null, `notification/${id}`, q, 'delete')
+        }
+      },
+      user: (function () {
+        var call = rest('user')
+        return {
+          agreement: function () {
+            return call('agreement')
+          }
+        }
+      })()
     }
     return api
   }

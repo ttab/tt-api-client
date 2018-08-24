@@ -1,20 +1,17 @@
-/* global describe,it,beforeEach,afterEach,stub */
+/* global describe,it,beforeEach,stub */
 
 describe('api', function () {
   var Api, request
   beforeEach(function () {
-    request = require('request')
-    stub(request, 'get')
+    request = stub()
     Api = require('../api')(require('events').EventEmitter, request)
-  })
-  afterEach(function () {
-    request.get.restore()
   })
 
   describe('search', function () {
     it('calls the search endpoint', function () {
-      request.get.withArgs({
+      request.withArgs({
         url: 'https://api.tt.se/content/v1/text/search',
+        method: 'get',
         qs: {q: 'panda'},
         headers: {'Authorization': 'Bearer a.itsallgood'}
       }).callsArgWith(1, null, {statusCode: 200}, JSON.stringify({hits: []}))

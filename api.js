@@ -40,12 +40,16 @@ module.exports = function (EventEmitter, request) {
             var events = new EventEmitter()
             var next = function () {
               rest(mediaType, 'stream', query).then(function (hits) {
-                hits.hits.forEach(function (hit) {
-                  events.emit('data', hit)
-                  query.last = hit.uri
-                })
+                if (running) {
+                  hits.hits.forEach(function (hit) {
+                    events.emit('data', hit)
+                    query.last = hit.uri
+                  })
+                }
               }).catch(function (err) {
-                events.emit('error', err)
+                if (running) {
+                  events.emit('error', err)
+                }
               }).then(function () {
                 if (running) return next()
               })

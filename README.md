@@ -27,3 +27,24 @@
     })
     images.start()
 
+    # create a notification
+    api.content('image').notification.create({
+      title: 'my notification',
+      type: 'mobile',
+      q: 'panda'
+    }).then(function (res) {
+      console.log('created notification', res.id)
+    })
+    
+    # list notifications
+    api.notification.list().then(function (res) {
+      console.log('my notifications', res)
+    })
+    
+    # delete a notification
+    api.notification(id).delete()
+
+    # get user agreements
+    api.user.agreement().then(function (agrs) {
+      console.log('my user agreements', agrs)
+    })

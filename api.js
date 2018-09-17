@@ -4,7 +4,8 @@ module.exports = function (EventEmitter, request) {
   return function (opts) {
     opts = Object.assign({host: 'https://api.tt.se'}, opts)
     var token
-    var rest = function (ap, v = 'v1') {
+    var rest = function (ap, v) {
+      if (!v) v = 'v1'
       return function (mt, op, q, method = 'get') {
         var url = [ opts.host, ap, v, mt, op ].filter(function (i) {
           return i

@@ -1,9 +1,13 @@
-# JavaScript client for TT APIs
+# Browser-friendly JavaScript client for public TT APIs
 
 ![Version](http://img.shields.io/npm/v/@ttab/api-client.svg) &nbsp;
 ![License](http://img.shields.io/npm/l/@ttab/api-client.svg) &nbsp;
 ![Monthly downloads](http://img.shields.io/npm/dm/@ttab/api-client.svg) &nbsp;
 ![Build Status](https://ci2.tt.se/buildStatus/icon\?job\=ttab/tt-api-client/master)
+
+## Supported APIs
+
+See (https://api.tt.se/docs) for API documentation.
 
 ## Content API
 

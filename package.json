@@ -1,5 +1,5 @@
 {
-  "name": "tt-api-client",
+  "name": "@ttab/api-client",
   "version": "0.3.1",
   "description": "",
   "main": "index.js",

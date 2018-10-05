@@ -1,8 +1,8 @@
 # JavaScript client for TT APIs
 
-![Version](http://img.shields.io/npm/v/tt-api-client.svg) &nbsp;
-![License](http://img.shields.io/npm/l/tt-api-client.svg) &nbsp;
-![Monthly downloads](http://img.shields.io/npm/dm/tt-api-client.svg) &nbsp;
+![Version](http://img.shields.io/npm/v/@ttab/api-client.svg) &nbsp;
+![License](http://img.shields.io/npm/l/@ttab/api-client.svg) &nbsp;
+![Monthly downloads](http://img.shields.io/npm/dm/@ttab/api-client.svg) &nbsp;
 ![Build Status](https://ci2.tt.se/buildStatus/icon\?job\=ttab/tt-api-client/master)
 
 ## Content API

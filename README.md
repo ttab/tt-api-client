@@ -36,13 +36,13 @@
       console.log('created notification', res.id)
     })
     
-    # list notifications
-    api.notification.list().then(function (res) {
+    # list all notifications
+    api.content('_all').notification.list().then(function (res) {
       console.log('my notifications', res)
     })
     
     # delete a notification
-    api.notification(id).delete()
+    api.content('_all').notification.delete(id)
 
     # get user agreements
     api.user.agreement().then(function (agrs) {

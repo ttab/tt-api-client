@@ -77,25 +77,16 @@ module.exports = function (EventEmitter, request) {
           notification: {
             create: function (q) {
               return call(mediaType, 'notification', q, 'post')
+            },
+            list: function () {
+              return call(mediaType, 'notification')
+            },
+            delete: function (id) {
+              return call(mediaType, `notification/${id}`, null, 'delete')
             }
           }
         }
       },
-      notification: (function () {
-        var call = rest('content')
-        var fn = function (id) {
-          return {
-            delete: function () {
-              return call('text', `notification/${id}`, null, 'delete')
-            }
-          }
-        }
-        fn.list = function () {
-          // mediatype is irrelevant here
-          return call('image', 'notification')
-        }
-        return fn
-      }()),
       user: (function () {
         var call = rest('user')
         return {

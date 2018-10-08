@@ -3,11 +3,7 @@
   "version": "0.5.0",
   "description": "Browser-friendly JavaScript client for TT Nyhetsbyrån public APIs.",
   "keywords": [
-    "api",
-    "client",
-    "browser",
-    "news",
-    "content"
+    "api", "client", "browser", "news", "content", "tt", "tt nyhetsbyrån"
   ],
   "main": "index.js",
   "directories": {
@@ -16,13 +12,14 @@
   },
   "scripts": {
     "test": "standard",
-    "bundle-test": "browserify -o test.bundle.js -d test/test-*",
+    "bundle-test": "browserify -o test/test.bundle.js -d test/test-*",
     "test-browser-integration": "npm run bundle-test && osascript -e \"tell application \\\"Google Chrome\\\" to open location \\\"file://${PWD}/test/index.html#$TOKEN\\\"\"",
     "test-nodjs-integration": "mocha"
   },
   "browser": {
     "./index.js": "./browser.js"
   },
+  "files": [ "*.js" ],
   "author": "Fredrik Appelberg",
   "license": "MIT",
   "devDependencies": {

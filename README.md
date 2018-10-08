@@ -11,7 +11,7 @@ Browser-friendly JavaScript client for TT Nyhetsbyrån public APIs.
 
 See the [API documentation](https://api.tt.se/docs) for more information.
 
-    const Api = require('tt-api-client')
+    const Api = require('@ttab/api-client')
     const api = Api().token(process.env.TOKEN)
     
     # searching

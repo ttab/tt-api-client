@@ -1,9 +1,15 @@
 {
   "name": "@ttab/api-client",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Browser-friendly JavaScript client for TT Nyhetsbyrån public APIs.",
   "keywords": [
-    "api", "client", "browser", "news", "content", "tt", "tt nyhetsbyrån"
+    "api",
+    "client",
+    "browser",
+    "news",
+    "content",
+    "tt",
+    "tt nyhetsbyrån"
   ],
   "main": "index.js",
   "directories": {
@@ -19,7 +25,9 @@
   "browser": {
     "./index.js": "./browser.js"
   },
-  "files": [ "*.js" ],
+  "files": [
+    "*.js"
+  ],
   "author": "Fredrik Appelberg",
   "license": "MIT",
   "devDependencies": {

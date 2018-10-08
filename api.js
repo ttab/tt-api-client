@@ -92,6 +92,16 @@ module.exports = function (EventEmitter, request) {
         return {
           agreement: function () {
             return call('agreement')
+          },
+          device: function (token) {
+            return {
+              register: function (opts) {
+                return call('device', token, opts, 'put')
+              },
+              unregister: function () {
+                return call('device', token, opts, 'delete')
+              }
+            }
           }
         }
       })()

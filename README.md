@@ -52,3 +52,17 @@ See the [API documentation](https://api.tt.se/docs) for more information.
     api.user.agreement().then(function (agrs) {
       console.log('my user agreements', agrs)
     })
+    
+    # register a mobile device
+    api.user.device(token).register({
+      type: 'ios-sandbox',
+      model: 'iPhone X'
+    }.then(function () {
+      console.log('registered!')
+    })
+    
+    # unregister a mobile device
+    api.user.device(token).unregister().then(function () {
+      console.log('unregistered!')
+    })
+    

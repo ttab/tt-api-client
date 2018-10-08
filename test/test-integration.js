@@ -28,7 +28,7 @@ describe('content', () => {
         expect(res).to.have.property('hits')
         expect(res.hits).to.be.instanceOf(Array)
       })
-    })
+    }).timeout(5000)
 
     it('accepts the _all mediaType', () => {
       return api.content('_all').search().then(res => {

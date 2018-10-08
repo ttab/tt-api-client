@@ -4,13 +4,10 @@ var token
 
 function loadApi () {
   if (typeof window === 'undefined') {
-    console.log('node.js')
     if (!(token = process.env.TOKEN)) throw new Error('Need access token in env var TOKEN')
     return new (require('../index'))().token(token)
   } else {
-    console.log('browser')
     if (!(token = location.hash.substring(1))) throw new Error('Need access token in location hash')
-    console.log(token)
     return new (require('../browser'))().token(token)
   }
 }

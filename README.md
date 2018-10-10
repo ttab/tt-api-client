@@ -52,7 +52,17 @@ See the [API documentation](https://api.tt.se/docs) for more information.
     api.user.agreement().then(function (agrs) {
       console.log('my user agreements', agrs)
     })
-    
+
+    # get the user profile
+    api.user.profile(['editorial', 'user']).get().then(function (profile) {
+      console.log(profile)
+    })
+
+    # update the user profile
+    api.user.profile(['editorial']).put({
+      editorial: true,
+    })
+
     # register a mobile device
     api.user.device(token).register({
       type: 'ios-sandbox',

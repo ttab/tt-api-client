@@ -4,7 +4,8 @@ var token
 
 function loadApi () {
   if (typeof window === 'undefined') {
-    if (!(token = process.env.TOKEN)) throw new Error('Need access token in env var TOKEN')
+    let token = process.env.TOKEN
+    if (!token) throw new Error('Need access token in env var TOKEN')
     return new (require('../index'))().token(token)
   } else {
     if (!(token = location.hash.substring(1))) throw new Error('Need access token in location hash')
@@ -90,19 +91,51 @@ describe('content', () => {
 })
 
 describe('user', () => {
-  it('can get agreements', () => {
-    return api.user.agreement().then(res => {
-      expect(res).to.be.instanceOf(Array)
+  describe('agreement', () => {
+    it('can get agreements', () => {
+      return api.user.agreement().then(res => {
+        expect(res).to.be.instanceOf(Array)
+      })
     })
   })
 
-  it('can register and unregister devices', () => {
-    var token = 'abcd-1234-PANDA'
-    return api.user.device(token).register({
-      type: 'ios-sandbox',
-      model: 'iPhone X'
-    }).then(res => {
-      return api.user.device(token).unregister()
+  describe('device', () => {
+    it('can register and unregister devices', () => {
+      var token = 'abcd-1234-PANDA'
+      return api.user.device(token).register({
+        type: 'ios-sandbox',
+        model: 'iPhone X'
+      }).then(res => {
+        return api.user.device(token).unregister()
+      })
+    }).timeout(10000)
+  })
+
+  describe('profile', () => {
+    it('can get the user profile', () => {
+      return api.user.profile().get().then(profile => {
+        expect(profile).to.have.property('user')
+      })
     })
+
+    it('can get selected properties of the user profile', () => {
+      return api.user.profile(['user']).get().then(profile => {
+        expect(profile).to.have.property('user')
+      })
+    })
+
+    it('can update the user profile', () => {
+      let p = api.user.profile(['panda'])
+      return p.put({ panda: true })
+        .then(p.get).then(profile => {
+          expect(profile).to.have.property('panda', true)
+        })
+        .then(() => {
+          return p.put({ panda: false })
+        })
+        .then(p.get).then(profile => {
+          expect(profile).to.have.property('panda', false)
+        })
+    }).timeout(10000)
   })
 })

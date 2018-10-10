@@ -6,7 +6,8 @@ module.exports = function (EventEmitter, request) {
     var token
     var rest = function (ap, v) {
       if (!v) v = 'v1'
-      return function (mt, op, q, method = 'get') {
+      return function (mt, op, q, method, body) {
+        if (!method) method = 'get'
         var url = [ opts.host, ap, v, mt, op ].filter(function (i) {
           return i
         }).join('/')
@@ -16,7 +17,11 @@ module.exports = function (EventEmitter, request) {
             method: method,
             url: url,
             qs: q,
-            headers: {'Authorization': 'Bearer ' + token}
+            headers: {
+              'Authorization': 'Bearer ' + token,
+              'Content-Type': 'application/json'
+            },
+            body: body ? JSON.stringify(body) : undefined
           }, function (err, response, body) {
             if (err) return reject(err)
             var data = null
@@ -100,6 +105,17 @@ module.exports = function (EventEmitter, request) {
               },
               unregister: function () {
                 return call('device', token, opts, 'delete')
+              }
+            }
+          },
+          profile: function (props) {
+            if (!props) props = []
+            return {
+              get: function () {
+                return call('profile', props.join(','))
+              },
+              put: function (profile) {
+                return call('profile', props.join(','), undefined, 'put', profile)
               }
             }
           }

@@ -63,6 +63,7 @@ module.exports = function (EventEmitter, request) {
                   })
                 }
               }).catch(function (err) {
+                if (err.code === 'ECONNRESET') return
                 if (running) {
                   events.emit('error', err)
                 }

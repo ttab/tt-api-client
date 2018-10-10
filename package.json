@@ -1,6 +1,6 @@
 {
   "name": "@ttab/api-client",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Browser-friendly JavaScript client for TT Nyhetsbyrån public APIs.",
   "keywords": [
     "api",

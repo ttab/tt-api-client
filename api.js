@@ -2,7 +2,7 @@ const debug = require('debug')('tt:api')
 
 module.exports = function (EventEmitter, request) {
   return function (opts) {
-    opts = Object.assign({host: 'https://api.tt.se'}, opts)
+    opts = Object.assign({ host: 'https://api.tt.se' }, opts)
     var token
     var rest = function (ap, v) {
       if (!v) v = 'v1'
@@ -33,7 +33,7 @@ module.exports = function (EventEmitter, request) {
             }
             reject(Object.assign(
               new Error('status ' + response.statusCode),
-              {statusCode: response.statusCode}, data))
+              { statusCode: response.statusCode }, data))
           })
         })
       }

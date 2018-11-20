@@ -52,15 +52,15 @@ describe('content', () => {
   describe('notification', () => {
     it('can be created, listed, and deleted', () => {
       return Promise.resolve().then(() => {
-        return api.content('text').notification.create({
+        return api.content('text').notification.mobile({
           q: 'panda',
-          title: '__all the pandas__',
-          type: 'mobile'
+          title: '__all the pandas__'
         }).then(res => {
           expect(res).to.have.property('id')
           expect(res).to.have.property('title', '__all the pandas__')
           expect(res).to.have.property('mediaType', 'text')
           expect(res).to.have.property('q', 'panda')
+          expect(res).to.have.property('type', 'mobile')
         })
       }).then(() => {
         return api.content('text').notification.list().then(res => {

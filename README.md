@@ -31,15 +31,23 @@ See the [API documentation](https://api.tt.se/docs) for more information.
     })
     images.start()
 
-    # create a notification
-    api.content('image').notification.create({
+    # create a mobile notification
+    api.content('image').notification.mobile({
       title: 'my notification',
-      type: 'mobile',
       q: 'panda'
     }).then(function (res) {
       console.log('created notification', res.id)
     })
-    
+
+    # create an email notification
+    api.content('image').notification.email({
+      title: 'my notification',
+      q: 'panda',
+      email: 'panda@example.com'
+    }).then(function (res) {
+      console.log('created notification', res.id)
+    })
+
     # list all notifications
     api.content('_all').notification.list().then(function (res) {
       console.log('my notifications', res)

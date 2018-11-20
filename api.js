@@ -81,8 +81,11 @@ module.exports = function (EventEmitter, request) {
             return events
           },
           notification: {
-            create: function (q) {
-              return call(mediaType, 'notification', q, 'post')
+            mobile: function (q) {
+              return call(mediaType, 'notification/mobile', q, 'post')
+            },
+            email: function (q) {
+              return call(mediaType, 'notification/email', q, 'post')
             },
             list: function () {
               return call(mediaType, 'notification')

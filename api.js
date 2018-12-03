@@ -1,4 +1,5 @@
 const debug = require('debug')('tt:api')
+const axios = require('axios')
 
 module.exports = function (EventEmitter, request) {
   return function (opts) {
@@ -11,30 +12,23 @@ module.exports = function (EventEmitter, request) {
         var url = [ opts.host, ap, v, mt, op ].filter(function (i) {
           return i
         }).join('/')
-        debug(method, url)
-        return new Promise(function (resolve, reject) {
-          request({
-            method: method,
-            url: url,
-            qs: q,
-            headers: {
-              'Authorization': 'Bearer ' + token,
-              'Content-Type': 'application/json'
-            },
-            body: body ? JSON.stringify(body) : undefined
-          }, function (err, response, body) {
-            if (err) return reject(err)
-            var data = null
-            try {
-              data = JSON.parse(body)
-            } catch (err) { }
-            if (response.statusCode === 200) {
-              return resolve(data)
-            }
-            reject(Object.assign(
-              new Error('status ' + response.statusCode),
-              { statusCode: response.statusCode }, data))
-          })
+        debug(method, url, q)
+        return axios({
+          method: method,
+          url: url,
+          params: q,
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          },
+          data: body
+        }).then(function (res) {
+          return res.data
+        }).catch(function (err) {
+          if (err.response && err.response.data) {
+            throw Object.assign(new Error(), err.response.data, { statusCode: err.response.status })
+          }
+          throw err
         })
       }
     }

@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "standard",
-    "bundle-test": "mkdir -p tmp && browserify -o tmp/test.bundle.js -d test/test-*",
+    "bundle-test": "mkdir -p tmp && browserify -o tmp/test.bundle.js -d test/*.js",
     "test-browser-integration": "npm run bundle-test && osascript -e \"tell application \\\"Google Chrome\\\" to open location \\\"file://${PWD}/test/index.html#$TOKEN\\\"\"",
     "test-nodejs-integration": "mocha"
   },
@@ -40,10 +40,9 @@
     "standard": "^12.0.1"
   },
   "dependencies": {
-    "browser-request": "^0.3.3",
+    "axios": "^0.18.0",
     "debug": "^3.1.0",
-    "eventemitter3": "^2.0.3",
-    "request": "^2.83.0"
+    "eventemitter3": "^2.0.3"
   },
   "peerDependencies": {}
 }

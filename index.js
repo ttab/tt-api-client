@@ -1,1 +1,1 @@
-module.exports = require('./api')(require('events').EventEmitter, require('request'))
+module.exports = require('./api')(require('events').EventEmitter)

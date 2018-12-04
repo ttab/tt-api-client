@@ -19,6 +19,15 @@ const expect = chai.expect
 chai.should()
 
 describe('content', () => {
+  describe('errors', () => {
+    it('has a statusCode', () => {
+      return api.content('panda').search().should.eventually.be.rejectedWith('Request validation failed')
+        .then((e) => {
+          expect(e.statusCode).to.equal(400)
+        })
+    })
+  })
+
   describe('search', () => {
     it('returns a search result', () => {
       return api.content('image').search().then(res => {

@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "standard",
-    "bundle-test": "mkdir -p tmp && browserify -o tmp/test.bundle.js -d test/test-*",
+    "bundle-test": "mkdir -p tmp && browserify -o tmp/test.bundle.js -d test/*.js",
     "test-browser-integration": "npm run bundle-test && osascript -e \"tell application \\\"Google Chrome\\\" to open location \\\"file://${PWD}/test/index.html#$TOKEN\\\"\"",
     "test-nodejs-integration": "mocha"
   },

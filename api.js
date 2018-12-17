@@ -25,8 +25,20 @@ module.exports = function (EventEmitter, request) {
         }).then(function (res) {
           return res.data
         }).catch(function (err) {
-          if (err.response && err.response.data) {
-            throw Object.assign(new Error(), err.response.data, { statusCode: err.response.status })
+          if (err.response) {
+            var e
+            if (typeof err.response.data === 'object') {
+              e = new Error(err.response.data.message)
+              for (var prop of Object.entries(err.response.data)) {
+                if (prop[0] !== 'message') {
+                  e[prop[0]] = prop[1]
+                }
+              }
+            } else {
+              e = new Error(err.response.data)
+            }
+            e.statusCode = err.response.status
+            throw e
           }
           throw err
         })
